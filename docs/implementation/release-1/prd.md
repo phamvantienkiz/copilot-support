@@ -132,12 +132,16 @@ flowchart TD
 
 | Mã FR | Tên chức năng | Mô tả nghiệp vụ | Quy tắc nghiệp vụ (Business Rules) | Mức ưu tiên |
 | :---: | :--- | :--- | :--- | :---: |
-| **FR-01** | **Khung Chat Simulator & Kịch bản mẫu** | Cho phép chọn khách hàng và nạp sẵn kịch bản khiếu nại | Hỗ trợ nạp kịch bản "máy xay bể cối + giao trễ" để kiểm thử nhanh mà không cần gõ thủ công. | **P0 (Must)** |
+| **FR-01** | **Khung Chat Simulator & Kịch bản mẫu** | Chọn khách hàng mẫu và nạp sẵn kịch bản khiếu nại | Hỗ trợ chọn `cus_003 - Nguyễn Văn A`, nạp kịch bản "máy xay bể cối + giao trễ" để kiểm thử nhanh. | **P0 (Must)** |
 | **FR-02** | **Kích hoạt Trì hoãn (Debounce)** | Tự động kích hoạt Copilot khi khách dừng gõ | **Quy tắc:** Đếm ngược đúng **1.2 giây** kể từ tin nhắn cuối cùng của khách mới bắt đầu gọi Agent. | **P0 (Must)** |
-| **FR-03** | **Vòng lặp ReAct Agent 6 Tools** | Tự động suy luận và gọi tools để thu thập thông tin | **Quy tắc:** Giới hạn cứng tối đa **6 vòng lặp (`max_turns = 6`)**. Toàn bộ tools là **chỉ đọc (`read-only`)**. | **P0 (Must)** |
-| **FR-04** | **Hybrid Search Tìm kiếm Tri thức** | Tra cứu danh mục sản phẩm và playbook giải quyết sự cố | **Quy tắc:** Điểm xếp hạng = $0.3 \times \text{BM25} + 0.7 \times \text{Cosine Similarity}$. Xử lý tốt từ lóng "bể" tương đương "nứt". | **P0 (Must)** |
-| **FR-05** | **Grounding Guard & Tách biệt Số liệu** | Triệt tiêu ảo giác và tính toán chỉ số tài chính | **Quy tắc:** CLV, AOV, tỷ lệ đúng hẹn do server tính 100%. Nếu LLM sinh mã đơn không có trong DB, hệ thống **bắt buộc loại bỏ ngay**. | **P0 (Must)** |
-| **FR-06** | **3 Mẫu Phản hồi & Thao tác 'Sử dụng'** | Cung cấp 3 phương án trả lời theo 3 tone | **Quy tắc:** Đủ 3 tone (*Empathetic*, *Concise*, *Formal*). Khi bấm "Sử dụng", text điền vào ô chat và focus con trỏ, **không được tự ý gửi**. | **P0 (Must)** |
+| **FR-03** | **Hồ sơ Nhanh & Nhận định AI kèm Shop Benchmark** | Hiển thị thẻ nhận định AI và 4 chỉ số tài chính đối chiếu mức chung shop | **Quy tắc:** CLV (2,52tr vs trung vị shop 3,93tr), AOV (840k vs TB shop -46%), Tần suất (3 đơn/13 tháng), Đúng hẹn (33% vs shop 92%) do Server tính 100%. | **P0 (Must)** |
+| **FR-04** | **Thẻ Cảnh báo Tiền lệ (Context Warning)** | Phát hiện sự cố lặp lại từ lịch sử khiếu nại cũ | **Quy tắc:** Phát hiện khách từng nhận voucher `XINLOI30K` vì đơn ấm siêu tốc `#10006` trễ 3 ngày; gắn tag `#10006`, `#10032`, `hồ sơ khách`. | **P0 (Must)** |
+| **FR-05** | **Biểu đồ Cột 3 Đơn Gần Nhất** | Biểu diễn timeline đơn hàng kèm trạng thái trực quan | **Quy tắc:** Phân biệt 3 màu: Cyan (đúng hẹn), Vàng (trễ hẹn), Vàng sọc viền đỏ (đang khiếu nại đơn `#10032`). | **P0 (Must)** |
+| **FR-06** | **3 Mẫu Phản hồi & Thao tác '↩ Sử dụng'** | Cung cấp 3 phương án trả lời theo 3 tone | **Quy tắc:** Đủ 3 tone (*Empathetic*, *Concise*, *Formal*). Bấm nút `↩ Sử dụng` thì text điền vào ô chat và focus con trỏ, **tuyệt đối không tự ý gửi**. | **P0 (Must)** |
+| **FR-07** | **Live Trace Streaming "Agent đang làm gì"** | Hiển thị tiến trình suy luận và gọi công cụ theo thời gian thực | **Quy tắc:** Hiển thị từng vòng (Round 1 & 2), Thought, gọi song song 4 tools kèm thời gian thực thi, thanh điểm độ khớp và badge kết quả phụ. | **P0 (Must)** |
+| **FR-08** | **Minh bạch Tra cứu "Tìm kiếm" (Hybrid Breakdown)** | Hiển thị chi tiết cơ chế ghép điểm BM25 và Semantic | **Quy tắc:** Công thức $\text{score} = 0.3 \times \text{BM25} + 0.7 \times \text{semantic}$. Ghim khách hàng (`pinned`). Hiển thị thanh điểm kép (Dual Score Bar). | **P0 (Must)** |
+| **FR-09** | **Thanh Giám sát Hiệu năng & Chi phí API** | Theo dõi model, độ trễ và chi phí trên top banner | **Quy tắc:** Hiển thị tên model DeepSeek Flash, thời gian chạy (~21s), số lượt gọi model, số lượt tra cứu và chi phí ($0,0016 / lượt chat). | **P0 (Must)** |
+| **FR-10** | **Grounding Guard & Anti-Hallucination** | Triệt tiêu ảo giác về mã đơn, mã sản phẩm và chính sách | **Quy tắc:** Bắt buộc đối soát 100% ID với SQLite. Nếu model sinh mã không có thật, tự động gạch bỏ câu trả lời bịa đặt. | **P0 (Must)** |
 
 ---
 
