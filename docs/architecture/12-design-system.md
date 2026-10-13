@@ -179,6 +179,53 @@ Color tokens are specified in `oklch` for uniform perceptual lightness and high 
 
 ---
 
+### 3.5. Thanh Phân rã Điểm kép (`DualScoreBar`)
+
+#### Anatomy
+`[Label & Title] + [Stacked Progress Bar (BM25: Grey/Slate + Semantic: Cyan/Blue)] + [Score Value: 0.00 -> 1.00]`
+
+#### Rules & Tokens
+- **Bar Container:** Height `6px`, Radius `radius.full`, Background `oklch(0.2 0.01 262)`.
+- **BM25 Segment (Từ khóa):** Width tỷ lệ theo điểm BM25, Background `oklch(0.6 0.02 262)` (Xám / Slate).
+- **Semantic Segment (Ý nghĩa):** Width tỷ lệ theo điểm Semantic, Background `oklch(0.65 0.15 220)` (Xanh cyan / Sky blue).
+- **Tooltip On Hover:** Hiển thị chi tiết: `BM25: {score} | Semantic: {score} => Final: {weighted_score}`.
+
+---
+
+### 3.6. Biểu đồ Cột 3 Đơn Gần Nhất (`OrderTimelineBarChart`)
+
+#### Anatomy
+`[Chart Header: "3 ĐƠN GẦN NHẤT" + Range "05 -> 09/2026"] + [3 Vertical Bars] + [Bar Labels: Tên sản phẩm, Mã đơn, Ngày, Ghi chú trễ] + [Legend]`
+
+#### Rules & States
+- **Cột Đúng hẹn:** Màu Cyan (`oklch(0.75 0.14 200)`), Ghi chú: "đúng hẹn".
+- **Cột Trễ hẹn:** Màu Vàng (`oklch(0.8 0.16 85)`), Ghi chú: "trễ {N} ngày".
+- **Cột Đang khiếu nại:** Nền sọc chéo Vàng + Viền Đỏ (`oklch(0.65 0.22 25)`), Bar outline nổi bật.
+- **Giá trị đơn hàng:** Hiển thị số tiền phía trên đầu cột (vd: `420k`, `660k`, `1,44tr`).
+
+---
+
+### 3.7. Thẻ Cảnh báo Tiền lệ ("CẦN LƯU Ý" - `ContextWarningCard`)
+
+#### Anatomy
+`[Header: Icon Alert đỏ/cam + Title "CẦN LƯU Ý" + Badge "AI · từ context"] + [Body: Cảnh báo sự cố lặp lại] + [Footer: Tag Chips]`
+
+#### Rules & Tokens
+- **Surface:** Background `oklch(0.18 0.03 262)`, Border `1px solid oklch(0.4 0.1 30)`.
+- **Tag Chips:** Radius `radius.xs`, Background `oklch(0.25 0.02 262)`, Text `oklch(0.8 0.02 262)`.
+- **Interactive:** Nhấp vào tag `#10006` mở modal/drawer xem chi tiết đơn hàng quá khứ.
+
+---
+
+### 3.8. Thẻ Nhận định AI (`AiAssessmentCard`)
+
+#### Anatomy
+`[Icon Sparkles + Title "NHẬN ĐỊNH AI"] + [Headline: "Lỗi kép: ..."] + [Paragraph: Phân tích bối cảnh và khuyến nghị]`
+
+#### Rules & Tokens
+- **Headline Font:** `font.size.lg`, `font.weight.bold`, Color `oklch(0.95 0.02 262)`.
+- **Accent Indicator:** Đường viền dọc bên trái màu đỏ cam hoặc tím nhạt để tạo điểm nhấn thị giác.
+
 ## 4. Accessibility Requirements & Acceptance Criteria (WCAG 2.2 AA)
 
 ### 4.1. Contrast Constraints
